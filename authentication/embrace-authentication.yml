@@ -1,0 +1,110 @@
+generated: '2026-08-12'
+method: searched
+source: https://embrace.io/docs/product/settings/service-accounts/
+docs:
+  - https://embrace.io/docs/product/settings/api-tokens/
+  - https://embrace.io/docs/product/settings/service-accounts/
+  - https://embrace.io/docs/mcp/
+  - https://embrace.io/docs/metrics-forwarding/metrics-api/
+  - https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+probe:
+  - {url: 'https://mcp.embrace.io/.well-known/oauth-authorization-server', status: 200}
+  - {url: 'https://mcp.embrace.io/.well-known/oauth-protected-resource', status: 200}
+  - {url: 'https://dash-api.embrace.io/.well-known/jwks.json', status: 200}
+description: >-
+  Embrace runs two parallel credential systems. Org-wide API Tokens (auto-created, one capability
+  each: symbol upload, metrics pull, and similar) authenticate the Metrics and Custom Metrics
+  APIs. Service-account bearer tokens (admin-issued, multi-scope, app-scoped, individually
+  revocable) plus an OAuth 2.0 authorization-code flow with PKCE authenticate the MCP server.
+  Both are sent as HTTP Bearer credentials in the Authorization header. There is no OpenAPI
+  document to derive securitySchemes from, so this profile is read from the provider's own auth
+  documentation and corroborated against the live RFC 8414 / RFC 9728 discovery documents.
+summary:
+  types: [http, oauth2]
+  http_schemes: [bearer]
+  api_key_in: [header]
+  oauth2_flows: [authorizationCode]
+  pkce: S256
+schemes:
+  - name: MetricsApiToken
+    type: http
+    scheme: bearer
+    in: header
+    parameter: Authorization
+    format: "Bearer <metrics api token>"
+    applies_to: [embrace-metrics-api]
+    issued_from: Embrace dashboard → Settings → Organization → API → "Metrics API" token
+    scope_of_access: entire organization
+    rotation: Replace the whole org token.
+    docs: https://embrace.io/docs/metrics-forwarding/metrics-api/
+  - name: CustomMetricsApiToken
+    type: http
+    scheme: bearer
+    in: header
+    parameter: Authorization
+    format: "Bearer <custom metrics api token>"
+    applies_to: [embrace-custom-metrics-api]
+    issued_from: >-
+      Issued on request by an Embrace onboarding specialist. This is explicitly a different token
+      than the Metrics API token, and it is not self-service — a sales/onboarding gate sits in
+      front of the Custom Metrics API even though the reference documentation is public.
+    docs: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+  - name: SymbolUploadToken
+    type: http
+    scheme: bearer
+    in: header
+    parameter: Authorization
+    applies_to: [build-tooling]
+    issued_from: Embrace dashboard → Settings → API
+    detail: >-
+      Consumed by embrace-web-cli (-t flag), the iOS Run Script dSYM upload phase, the Android
+      Gradle plugin and the embrace-io/action-symbol-upload GitHub Action. Paired with the
+      5-character Embrace App ID, which is an identifier rather than a secret.
+    docs: https://embrace.io/docs/web/getting-started/sourcemap-uploads/
+  - name: ServiceAccountBearerToken
+    type: http
+    scheme: bearer
+    in: header
+    parameter: Authorization
+    format: "Bearer emb_sa_<43 characters>  (50 characters total)"
+    prefix: emb_sa_
+    applies_to: [embrace-mcp-server]
+    issued_from: Settings → Organization → API → Service Accounts (org admins only)
+    scopes: [mcp:tools:call, mcp:read, mcp:write]
+    app_scoping: All apps in the org (including future apps) or an explicit app list.
+    identity_in_logs: Named service account, e.g. "Service account 'CI Pipeline' did X".
+    shown_once: true
+    rotation: >-
+      A service account can hold several live tokens, so rotation is create-new → deploy →
+      confirm the Last used timestamp updates → revoke old. Revocation is immediate; deleting the
+      service account revokes all of its tokens.
+    docs: https://embrace.io/docs/product/settings/service-accounts/
+  - name: EmbraceMcpOAuth2
+    type: oauth2
+    applies_to: [embrace-mcp-server]
+    flows:
+      - flow: authorizationCode
+        issuer: https://dash-api.embrace.io
+        authorizationUrl: https://dash.embrace.io/oauth/authorize
+        tokenUrl: https://dash-api.embrace.io/oauth/token
+        registrationUrl: https://dash-api.embrace.io/oauth/register
+        revocationUrl: https://dash-api.embrace.io/oauth/revoke
+        jwksUri: https://dash-api.embrace.io/.well-known/jwks.json
+        scopes: [mcp:read, mcp:write, mcp:tools:call]
+        grant_types: [authorization_code, refresh_token]
+        pkce_methods: [S256]
+        token_endpoint_auth_methods: [none, client_secret_basic, client_secret_post]
+    dynamic_client_registration: true    # RFC 7591 registration_endpoint advertised
+    detail: >-
+      The MCP server advertises RFC 9728 protected-resource metadata pointing at the
+      dash-api.embrace.io authorization server, which in turn advertises RFC 8414 metadata with a
+      dynamic client registration endpoint. Tokens issued through this flow are tied to the
+      individual Embrace user and inherit that user's app permissions.
+    docs: https://embrace.io/docs/mcp/
+gaps:
+  - >-
+    No OpenAPI/Swagger document is published for the Metrics or Custom Metrics APIs, so there are
+    no machine-readable securitySchemes to validate this profile against.
+  - >-
+    api.embrace.io returns 403 to every anonymous request including /.well-known/*, so the REST
+    auth surface cannot be confirmed by probe — only by documentation.

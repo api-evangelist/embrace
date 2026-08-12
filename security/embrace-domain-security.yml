@@ -1,0 +1,32 @@
+generated: '2026-08-12'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: embrace.io
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 11 23:59:59 2026 GMT
+  hsts: false
+- host: api.embrace.io
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 17 01:42:52 2026 GMT
+  hsts: null
+- host: mcp.embrace.io
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 17 01:42:52 2026 GMT
+  hsts: null
+domains:
+- domain: embrace.io
+  dnssec: false
+  caa:
+  - 0 issue "letsencrypt.org"
+  - 0 issue "pki.goog"
+  - 0 issuewild "amazon.com"
+  - 0 issuewild "letsencrypt.org"
+  - 0 iodef "mailto:security@embrace.io"
+  - 0 issue "amazon.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

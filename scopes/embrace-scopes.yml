@@ -1,0 +1,51 @@
+generated: '2026-08-12'
+method: probed
+source: https://mcp.embrace.io/.well-known/oauth-authorization-server
+docs: https://embrace.io/docs/product/settings/service-accounts/
+description: >-
+  Embrace's only OAuth scope surface is the MCP server. Three scopes are advertised in both the
+  RFC 8414 authorization-server metadata and the RFC 9728 protected-resource metadata, and the
+  same three are selectable when issuing a service-account bearer token in the dashboard. There
+  is no OpenAPI document declaring oauth2 securitySchemes, so the derive-oauth-scopes.py pass has
+  nothing to read; this file is built from the live discovery documents plus the docs, which is a
+  stronger source than a derivation.
+  The Metrics and Custom Metrics APIs are bearer-token APIs with no scope model at all.
+schemes:
+  - name: EmbraceMcpOAuth2
+    source: well-known/embrace-mcp-oauth-authorization-server.json
+    resource: https://mcp.embrace.io/mcp
+    resource_name: Embrace MCP
+    authorization_servers: [https://dash-api.embrace.io]
+    bearer_methods_supported: [header]
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://dash.embrace.io/oauth/authorize
+        tokenUrl: https://dash-api.embrace.io/oauth/token
+        pkce: S256
+scopes:
+  - scope: mcp:tools:call
+    description: >-
+      Invoke MCP tools. Required for any MCP access — a token without it cannot call a single
+      tool regardless of what else it carries.
+    flows: [authorizationCode]
+    required: true
+    sources: [well-known/embrace-mcp-oauth-authorization-server.json, https://embrace.io/docs/product/settings/service-accounts/]
+  - scope: mcp:read
+    description: Read data through the MCP server.
+    flows: [authorizationCode]
+    required: false
+    sources: [well-known/embrace-mcp-oauth-authorization-server.json, https://embrace.io/docs/product/settings/service-accounts/]
+  - scope: mcp:write
+    description: Write data through the MCP server.
+    flows: [authorizationCode]
+    required: false
+    sources: [well-known/embrace-mcp-oauth-authorization-server.json, https://embrace.io/docs/product/settings/service-accounts/]
+notes:
+  - >-
+    All 19 published MCP tools are read-oriented (list_/get_), so what mcp:write currently grants
+    is not documented. Recorded as advertised, not interpreted.
+  - >-
+    The WordPress site MCP at https://embrace.io/wp-json/mcp/mcp-oauth-server advertises a single
+    coarse "mcp" scope from a separate issuer (https://embrace.io). It is not part of the product
+    API and is not merged into the scope list above.
+scope_count: 3

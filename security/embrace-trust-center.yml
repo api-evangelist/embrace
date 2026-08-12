@@ -1,0 +1,38 @@
+generated: '2026-08-12'
+method: probed
+probe: true
+url: https://trust.embrace.io/
+source: https://trust.embrace.io/
+platform: Vanta
+description: >-
+  Embrace runs a Vanta-hosted Trust Center at trust.embrace.io, with a Controls section. The page
+  is a single-page app: the shell returns HTTP 200 with the title "Embrace Trust Center" and the
+  keywords "Trust, Security, Compliance, Automation", but the certification list, control list and
+  document requests are all client-rendered and are not reachable by an anonymous machine. No
+  probed endpoint returned structured trust data — every path under trust.embrace.io returns the
+  same HTML shell.
+certifications: []
+certifications_readable: false
+evidence:
+  - {source: 'https://trust.embrace.io/', status: 200, kind: html, signals: ['title: Embrace Trust Center', 'meta keywords: Trust, Security, Compliance, Automation', 'canonical: https://trust.embrace.io', 'Vanta asset host']}
+  - {source: 'https://trust.embrace.io/controls', status: 200, kind: html, note: 'Controls section exists; contents are client-rendered.'}
+  - {source: 'https://trust.embrace.io/api/trust-page', status: 200, kind: html, note: 'Returns the SPA shell, not JSON — no anonymous machine-readable trust API.'}
+related:
+  privacy_policy: https://embrace.io/privacy/
+  terms_of_service: https://embrace.io/terms-of-service/
+  data_residency:
+    supported: true
+    regions: [us, eu]
+    hosts: [api-us1.embrace.io, api-eu1.embrace.io]
+    note: Regional data residency is a product feature, documented in the Metrics API pages.
+  privacy_docs:
+    - https://embrace.io/docs/ios/privacy/
+note: >-
+  No 'Compliance' pointer is emitted in apis.yml. That check reads a published compliance program
+  with named certifications; Embrace's trust center exists but names none that a machine — or a
+  reader without JavaScript — can see. Publishing the certification list as static content, or
+  linking the named frameworks from embrace.io, would convert this into a verifiable claim.
+warning: >-
+  Do NOT confuse this company with embrace.ai, an unrelated firm whose SOC 2 Type II press release
+  surfaces on searches for "Embrace SOC 2". That certification belongs to embrace.ai and is not
+  attributed to Embrace (embrace.io) here.

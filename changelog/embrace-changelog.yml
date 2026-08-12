@@ -1,0 +1,64 @@
+generated: '2026-08-12'
+method: searched
+source: https://embrace.io/docs/product/changelog/
+description: >-
+  Embrace publishes a dated, month-granular Dashboard Changelog in its docs, plus separate
+  per-SDK changelogs. Entries are narrative rather than versioned and carry no breaking-change
+  markers, so the classification below is read from the text, not from a machine-readable field.
+  The recent window is captured here; the live page is the source of truth.
+scheme: month-dated narrative (product), semver (per-SDK)
+current_version:
+  product: null   # the dashboard is continuously delivered; no product version number is published
+  sdks: {android: 9.1.0, ios: 6.21.0, web: 2.25.0, react-native: 7.0.0, flutter: 4.9.0, unity: 2.8.3}
+per_sdk_changelogs:
+  android: https://embrace.io/docs/android/changelog/
+  ios: https://embrace.io/docs/ios/changelog/
+  flutter: https://embrace.io/docs/flutter/changelog/
+  releases: https://github.com/embrace-io
+entries:
+  - date: '2026-06'
+    breaking: false
+    additions:
+      - "Histogram widget type for custom dashboards, with custom or auto-selected bin size."
+      - "Aggregation functions (count, sum, mean, median, mode, percentile, min, max) across all widget types, alerts and custom metrics."
+  - date: '2026-05'
+    breaking: false
+    additions:
+      - "Pie and bar chart widget types, including stacked and 100% stacked bar modes and threshold coloring on time-series bars."
+      - "Widget explore mode in the widget editor — adjust time ranges and filters, create alerts or custom metrics from a widget, save a modified chart as a new widget."
+      - "MCP service accounts and bearer-token authentication as an alternative to OAuth, enabling token-based MCP access for automated workflows that cannot use interactive auth."
+    highlights: [mcp, auth]
+  - date: '2026-04'
+    breaking: false
+    additions:
+      - "Redesigned dashboard header and sidebar with bookmarks and a new Explore section."
+      - "On-demand Test Now for Synthetics against a preconfigured site or an ad hoc URL/browser/region."
+      - "Crash tagging rules created in the UI are protected from CODEOWNERS overwrites; source badge distinguishes custom from CODEOWNERS-derived rules."
+      - "Copy widgets across dashboards and duplicate whole dashboards to another app."
+      - "Web Vitals dashboard: per-vital distribution charts, TTFB/LCP/INP subpart breakdowns, world map of vital scores, new Total Blocking Duration vital."
+      - "Web SDK auto-instruments user timing, element timing and server timing events."
+  - date: '2026-03'
+    breaking: false
+    additions:
+      - "Expanded MCP tools for logs, spans, exceptions and crash data; MCP server extended to web apps alongside mobile."
+      - "MCP network connection error intelligence — urgency ratings, plain-English explanations, recommended actions and drill-down suggestions that separate benign device-offline errors from genuine failures."
+    highlights: [mcp]
+  - date: '2026-01'
+    breaking: false
+    additions:
+      - "User Journeys generally available to all customers."
+  - date: '2025-12'
+    breaking: false
+    additions:
+      - "User Journeys: filter sessions by how a User Flow ended (crash, user-initiated termination, error) and see what caused each end."
+      - "Logs Forwarding to OTLP-compatible observability platforms alongside metrics and network spans."
+      - "Embrace MCP server (beta)."
+    highlights: [mcp, otlp]
+  - date: '2025-11'
+    breaking: false
+    additions:
+      - "Child span aggregation — child spans are first-class alongside root spans in filters, widgets, alerts and custom metrics."
+      - "Stats & KPI Panel single-value widget type."
+      - "User Journeys: save-time validation of User Flow configuration; filter issues by User Flow; taps and views as start/end event types."
+entry_count: 7
+window: '2025-11 through 2026-06'

@@ -1,0 +1,129 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://embrace.io/docs/ — the cross-cutting request/response semantics that apply across the
+  Embrace Metrics API, Custom Metrics API and MCP server, read from the reference pages rather
+  than derived from a spec (Embrace publishes no OpenAPI).
+description: >-
+  How Embrace's programmatic surfaces behave: authentication style, versioning, the request and
+  response shapes, what is and is not supported for retries, and where the runtime signals an
+  agent needs are simply absent. Embrace's product is telemetry ingestion via SDK; the HTTP API
+  surface is narrow (query metrics, manage custom metrics) and its conventions reflect that.
+
+api_style: >-
+  Three unrelated protocols rather than one house style — a Prometheus HTTP API for reads, a
+  small JSON REST API for custom-metric management, and JSON-RPC 2.0 over Streamable HTTP for MCP.
+base_urls:
+  metrics: https://api.embrace.io/metrics
+  metrics_us: https://api-us1.embrace.io/metrics
+  metrics_eu: https://api-eu1.embrace.io/metrics
+  custom_metrics: https://api.embrace.io/custom-metrics
+  custom_metrics_us: https://api-us1.embrace.io/custom-metrics
+  custom_metrics_eu: https://api-eu1.embrace.io/custom-metrics
+  mcp: https://mcp.embrace.io/mcp
+data_residency:
+  supported: true
+  detail: >-
+    Accounts on Embrace's regional data-residency feature must call the regional host instead of
+    the default one. This is a host-level switch, not a header or path prefix, so a client
+    configured against api.embrace.io will silently fail for a residency-enabled org.
+  docs: https://embrace.io/docs/metrics-forwarding/metrics-api/code-samples/
+
+authentication:
+  scheme: HTTP Bearer in the Authorization header on every surface.
+  token_families:
+    - Metrics API token (org-wide, dashboard-issued)
+    - Custom Metrics API token (issued by an Embrace onboarding specialist, not self-service)
+    - Symbol Upload token (build tooling)
+    - Service-account token, emb_sa_ prefix, scoped (MCP)
+    - OAuth 2.0 authorization-code + PKCE user token (MCP)
+  detail: authentication/embrace-authentication.yml
+
+idempotency:
+  supported: false
+  mechanism: null
+  detail: >-
+    Embrace documents no idempotency key, no request-replay semantics and no client-supplied
+    request identifier on any surface. The nearest behaviour is the Custom Metrics API returning
+    409 when a metric name already exists for an app, which makes create safe to repeat but is a
+    uniqueness constraint rather than an idempotency contract. NO Idempotency pointer is emitted
+    in apis.yml for this provider — the artifact records the absence, not a capability.
+
+pagination:
+  supported: false
+  detail: >-
+    No pagination is documented on the Custom Metrics API. The Metrics API inherits the
+    Prometheus HTTP API's shape, where result size is bounded by the query, the [start, end]
+    range and step rather than by pages. MCP tools are described as returning "top N" ranked
+    lists; whatever limit parameters exist are in the auth-gated inputSchema and are not published.
+
+query_semantics:
+  language: PromQL
+  multi_app: >-
+    Single app — app_id="a1b2C3". Several apps — app_id=~"a1b2C3|Z9Y8x7" (pipe-delimited regex).
+    Every app in the org — omit app_id entirely.
+  step_granularity: >-
+    Steps smaller than one hour are rounded up to an hour (stated in the provider's own Node
+    sample). Metric prefixes encode granularity directly in the metric name: five_minute_*,
+    hourly_*, daily_*.
+  freshness:
+    five_minute: available ~4 minutes after the data point is calculated
+    hourly: available ~15 minutes after the data point is calculated
+    daily: available ~14 hours after the data point is calculated
+  note: >-
+    That daily lag is the single most important runtime fact for an agent querying Embrace — a
+    daily metric for 00:00 is not readable until 14:00 the same day.
+  docs: https://embrace.io/docs/metrics-forwarding/metrics-api/
+
+filtering:
+  applies_to: custom-metrics
+  shape: >-
+    A boolean tree — {"op":"and","children":[{"field_op":"eq","key":"os_version","val":"12"}]}.
+  value_types: [string, int, boolean, range, property]
+  examples:
+    string: '{"key": "app_version", "field_op": "eq", "val": "3.2.0"}'
+    int: '{"key": "os_major_version", "field_op": "gt", "val": 9}'
+    boolean: '{"key": "has_anr", "field_op": "eq", "val": true}'
+    property: '{"key": "type", "field_op": "eq", "val": {"property_key": "k1", "property_values": ["v1", "v2"]}}'
+  gotcha: >-
+    duration_bucket filters match on the first satisfied condition rather than the tightest, so
+    duration_bucket < 1100 resolves to the < 1000 bucket. Embrace flags this explicitly; a
+    client that assumes tightest-match will silently read the wrong band.
+  docs: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+
+versioning:
+  scheme: uri-path
+  detail: >-
+    The Custom Metrics API carries /api/v1 in the path
+    (/custom-metrics/api/v1/app/{app_id}/custom-metrics); the Metrics API exposes the Prometheus
+    /api/v1 surface. No version header, no dated version train, and no published policy for
+    moving off v1. SDK versioning is separate and per-platform — see lifecycle/.
+  detail_ref: lifecycle/embrace-lifecycle.yml
+
+request_tracing:
+  request_id_header: null
+  detail: No request-id or correlation header is documented on any Embrace surface.
+
+error_envelope:
+  shape: '{"message": "<string>"}'
+  rfc9457: false
+  detail: errors/embrace-problem-types.yml
+
+rate_limit_signaling:
+  http_headers: []
+  detail: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After behaviour is documented for any Embrace HTTP
+    surface. Published limits are ingestion caps enforced in the SDK and backend, not request
+    quotas. See rate-limits/embrace-rate-limits.yml.
+
+conditional_requests:
+  etag: false
+  detail: Not documented.
+
+cross_links:
+  authentication: authentication/embrace-authentication.yml
+  scopes: scopes/embrace-scopes.yml
+  errors: errors/embrace-problem-types.yml
+  lifecycle: lifecycle/embrace-lifecycle.yml
+  rate_limits: rate-limits/embrace-rate-limits.yml
+  webhooks: asyncapi/embrace-alerts-webhooks.yml

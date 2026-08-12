@@ -1,0 +1,118 @@
+generated: '2026-08-12'
+method: searched
+source: https://embrace.io/docs/sdk-data-limits/
+description: >-
+  Embrace documents NO HTTP rate limits and NO rate-limit response headers on any of its
+  programmatic surfaces — not the Metrics API, not the Custom Metrics API, not the MCP server.
+  An agent calling Embrace has no runtime signal telling it when to back off. What Embrace does
+  publish, in detail, is a set of per-session INGESTION CAPS enforced by the SDKs and the backend.
+  Those are recorded below as kind: ingestion-cap so they are never mistaken for request quotas.
+http_rate_limits:
+  documented: false
+  response_headers: []
+  exhaustion_status: null
+  retry_after: false
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After behaviour appears anywhere in the Embrace
+    documentation, and api.embrace.io returns 403 to anonymous requests so nothing could be
+    observed on the wire either. The only documented retry guidance is prose on the Custom
+    Metrics API 500 response ("there was an internal error and you should retry later").
+limits:
+  - name: session_properties
+    kind: ingestion-cap
+    scope: per-session
+    limit: 100
+    platforms: [android, ios, web]
+    detail: "Keys up to 128 characters; values stored up to 256 characters and truncated beyond that."
+  - name: info_logs
+    kind: ingestion-cap
+    scope: per-session
+    limit: 100
+    platforms: [android, ios, web]
+  - name: warning_logs
+    kind: ingestion-cap
+    scope: per-session
+    limit: 200
+    platforms: [android, ios, web]
+  - name: error_logs
+    kind: ingestion-cap
+    scope: per-session
+    limit: 500
+    platforms: [android, ios, web]
+  - name: log_message_length
+    kind: truncation
+    scope: per-log
+    limit: 4000
+    unit: characters
+    platforms: [android, ios]
+    detail: "Web SDK truncates log messages at 128 characters."
+  - name: log_attributes
+    kind: ingestion-cap
+    scope: per-log
+    limit: 100
+    platform_overrides: {ios: 10, web: 50}
+  - name: breadcrumbs
+    kind: ingestion-cap
+    scope: per-session
+    limit: 100
+    platforms: [android, ios, web]
+    detail: "Message truncated at 256 characters. iOS additionally captures up to 80 tap events per session."
+  - name: custom_spans
+    kind: ingestion-cap
+    scope: per-session
+    limit: 500
+    platform_overrides: {ios: 1000, web: 1000}
+  - name: automatic_spans
+    kind: ingestion-cap
+    scope: per-session
+    limit: 5000
+    platform_overrides: {ios: 1500}
+  - name: span_attributes
+    kind: ingestion-cap
+    scope: per-span
+    limit: 100
+    platform_overrides: {ios: 128}
+    detail: "Android: attribute keys up to 128 characters, values up to 1,024 characters. iOS follows the OpenTelemetry default."
+  - name: span_events
+    kind: ingestion-cap
+    scope: per-span
+    limit: 10
+    detail: "Up to 10 attributes per span event."
+  - name: network_requests
+    kind: ingestion-cap
+    scope: per-session-per-domain
+    limit: 1000
+    platforms: [android]
+    detail: >-
+      Adjustable via Embrace remote configuration. On iOS network requests are captured as spans,
+      so the span limits apply instead. The Web SDK allows up to 10,000 network requests per session.
+  - name: webview_events
+    kind: ingestion-cap
+    scope: per-session
+    limit: 100
+    platforms: [android]
+    detail: "Adjustable via remote configuration. iOS applies no WebView-specific limit."
+  - name: exceptions
+    kind: ingestion-cap
+    scope: per-session
+    limit: 500
+    platforms: [web]
+    detail: "Each exception message up to 1,024 characters."
+overflow_behavior:
+  truncation: "Values exceeding a length limit are truncated, not rejected — the first N characters are kept."
+  count_limits: >-
+    When a per-session count limit is reached the SDK stops capturing that type for the rest of
+    the session: earliest data is kept and later data dropped. The one exception is traces on iOS,
+    where the most recent spans are kept and the oldest are dropped.
+tunable:
+  direction: down-only
+  mechanism: Embrace remote configuration
+  contact: support@embrace.io
+freshness_constraints:
+  note: >-
+    Not a rate limit, but the practical pacing constraint on polling the Metrics API.
+  five_minute: ~4 minutes after the data point is calculated
+  hourly: ~15 minutes after the data point is calculated
+  daily: ~14 hours after the data point is calculated
+  step_floor: Steps smaller than one hour are rounded up to an hour.
+limit_count: 14

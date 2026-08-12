@@ -1,0 +1,150 @@
+generated: '2026-08-12'
+method: probed
+source: live anonymous GET of /.well-known/* on every Embrace host named in apis.yml, the
+  documented Metrics/Custom Metrics API hosts, and the MCP host
+description: >-
+  Embrace serves a real RFC 8414 / RFC 9728 discovery surface in front of its MCP server:
+  mcp.embrace.io publishes both oauth-authorization-server and oauth-protected-resource,
+  and the issuer dash-api.embrace.io publishes its own authorization-server metadata plus
+  a JWKS. Everything else 404s or is WAF-blocked. Two false positives were rejected and are
+  recorded as such: dash.embrace.io answers 200 with the same 3,424-byte SPA shell for every
+  path probed (including /.well-known/security.txt), and get.embrace.io / embrace.io return
+  the marketing-site 404 template. No security.txt is served on any host.
+hosts:
+  - host: https://mcp.embrace.io
+    documents:
+      - path: /.well-known/oauth-authorization-server   # RFC 8414
+        status: 200
+        file: embrace-mcp-oauth-authorization-server.json
+      - path: /.well-known/oauth-protected-resource     # RFC 9728
+        status: 200
+        file: embrace-mcp-oauth-protected-resource.json
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+  - host: https://dash-api.embrace.io
+    note: OAuth issuer named by the MCP authorization-server metadata.
+    documents:
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: embrace-dash-api-oauth-authorization-server.json
+      - path: /.well-known/jwks.json
+        status: 200
+        file: embrace-dash-api-jwks.json
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://embrace.io
+    note: >-
+      WordPress marketing site. It runs a WordPress MCP plugin whose OAuth metadata is served
+      here; the resource it protects is https://embrace.io/wp-json/mcp/mcp-oauth-server, which
+      is the site-content MCP surface, NOT the Embrace product MCP server at mcp.embrace.io.
+      Captured because both documents are real, but do not conflate the two.
+    documents:
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: embrace-site-oauth-authorization-server.json
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        file: embrace-site-oauth-protected-resource.json
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+  - host: https://api.embrace.io
+    note: >-
+      Metrics + Custom Metrics API host. Every anonymous request returns 403 Forbidden from an
+      edge WAF, including /.well-known/*. This is a gate, not an absence.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/openid-configuration
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/oauth-protected-resource
+        status: 403
+      - path: /.well-known/api-catalog
+        status: 403
+      - path: /.well-known/ai-plugin.json
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+  - host: https://api-us1.embrace.io
+    note: US regional data-residency host; identical 403 posture to api.embrace.io.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+  - host: https://api-eu1.embrace.io
+    note: EU regional data-residency host; identical 403 posture to api.embrace.io.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+  - host: https://dash.embrace.io
+    note: >-
+      REJECTED AS A HIT. Single-page-app catch-all: every path probed returned HTTP 200 with the
+      same 3,424-byte HTML document (title "User-focused Observability Platform"), including
+      /openapi.json, /llms.txt and /.well-known/security.txt. A 200 that returns an SPA shell is
+      not a document.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        document: false
+        rejected: spa-html-shell
+      - path: /.well-known/agent-card.json
+        status: 200
+        document: false
+        rejected: spa-html-shell
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        document: false
+        rejected: spa-html-shell
+  - host: https://get.embrace.io
+    note: Marketing/landing host; returns the site 404 template for every /.well-known/ path.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+security_txt: false
+agent_card: false

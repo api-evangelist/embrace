@@ -1,0 +1,129 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  live probes of https://mcp.embrace.io/.well-known/* and
+  https://dash-api.embrace.io/.well-known/*, plus the Embrace documentation at
+  https://embrace.io/docs/
+description: >-
+  Which cross-cutting standards Embrace's programmatic surfaces actually conform to. Every
+  conforms:true row below is backed either by a document fetched from an Embrace host or by an
+  explicit statement in Embrace's own documentation. Rows marked conforms:false are recorded as
+  honest absences — several of them (OpenAPI, RFC 9457, RFC 9116) are the specific gaps that keep
+  this provider's machine-readable surface thin.
+standards:
+  - id: oauth2
+    name: OAuth 2.0 (RFC 6749)
+    conforms: true
+    evidence: >-
+      authorization_code + refresh_token grants advertised at
+      https://mcp.embrace.io/.well-known/oauth-authorization-server (HTTP 200).
+  - id: oauth2-pkce
+    name: PKCE (RFC 7636)
+    conforms: true
+    evidence: 'code_challenge_methods_supported: ["S256"] in the authorization-server metadata.'
+  - id: rfc8414
+    name: OAuth 2.0 Authorization Server Metadata
+    conforms: true
+    evidence: well-known/embrace-mcp-oauth-authorization-server.json (HTTP 200 from mcp.embrace.io and dash-api.embrace.io)
+  - id: rfc9728
+    name: OAuth 2.0 Protected Resource Metadata
+    conforms: true
+    evidence: well-known/embrace-mcp-oauth-protected-resource.json (HTTP 200; resource https://mcp.embrace.io/mcp)
+  - id: rfc7591
+    name: OAuth 2.0 Dynamic Client Registration
+    conforms: true
+    evidence: 'registration_endpoint: https://dash-api.embrace.io/oauth/register advertised in the authorization-server metadata.'
+  - id: rfc6750
+    name: OAuth 2.0 Bearer Token Usage
+    conforms: true
+    evidence: 'bearer_methods_supported: ["header"]; all Embrace token families are sent as Authorization: Bearer.'
+  - id: rfc7517
+    name: JSON Web Key Set
+    conforms: true
+    evidence: 'https://dash-api.embrace.io/.well-known/jwks.json returns a JWKS (HTTP 200).'
+  - id: mcp
+    name: Model Context Protocol
+    conforms: true
+    version: Streamable HTTP transport
+    evidence: >-
+      https://mcp.embrace.io/mcp documented and live; anonymous tools/list returns 401 with RFC
+      9728 discovery advertised alongside. 21 tools published at https://embrace.io/docs/mcp/.
+  - id: opentelemetry
+    name: OpenTelemetry
+    conforms: true
+    evidence: >-
+      Every Embrace SDK is built on OpenTelemetry. The Android and Flutter SDKs expose an
+      Embrace-enhanced implementation of the OTel Tracing API via getOpenTelemetry(); Android and
+      Apple SDKs accept arbitrary SpanExporter / LogRecordExporter instances.
+      Documented limitations: SpanLinks are not supported (addLink() is a no-op), attribute values
+      are persisted as Strings, and service.name / service.version currently describe the Embrace
+      SDK rather than the host app.
+    docs: https://embrace.io/docs/open-telemetry/integration/
+  - id: otlp
+    name: OpenTelemetry Protocol (OTLP)
+    conforms: true
+    evidence: >-
+      OTLP gRPC and HTTP exporters supported from Android, Apple, React Native and Flutter SDKs;
+      logs, metrics and network spans forwarded to OTLP-compatible destinations.
+  - id: promql
+    name: Prometheus Query Language / Prometheus HTTP API
+    conforms: true
+    evidence: >-
+      The Metrics API is queried with PromQL over the Prometheus /api/v1 surface; Embrace's own
+      code samples drive it with the generic prometheus-query (Node) and prometheus-api-client
+      (Python) clients, which is the strongest possible evidence of protocol conformance.
+    caveat: Steps smaller than one hour are rounded up to an hour.
+  - id: openapi
+    name: OpenAPI
+    conforms: false
+    evidence: >-
+      No OpenAPI or Swagger document found. Probed /openapi.json, /openapi.yaml, /swagger.json,
+      /v1/openapi.json and /api-docs on api.embrace.io (403 on all), mcp.embrace.io (404 on all),
+      embrace.io (404) and dash.embrace.io (200 SPA shell, not a spec).
+  - id: asyncapi
+    name: AsyncAPI
+    conforms: false
+    evidence: No AsyncAPI document published; the alert webhook payload has no published schema.
+  - id: graphql
+    name: GraphQL
+    conforms: false
+    evidence: >-
+      No first-party GraphQL surface. Embrace ships a GraphQL best-practices page for
+      instrumenting a customer's own GraphQL traffic, which is instrumentation guidance, not an
+      Embrace GraphQL API.
+  - id: rfc9457
+    name: Problem Details for HTTP APIs
+    conforms: false
+    evidence: 'Error bodies are a bare {"message": "..."} envelope; no application/problem+json.'
+  - id: rfc9116
+    name: security.txt
+    conforms: false
+    evidence: >-
+      /.well-known/security.txt returns 404 on embrace.io, mcp.embrace.io, dash-api.embrace.io and
+      get.embrace.io, and 403 on api.embrace.io. dash.embrace.io answers 200 with an SPA shell,
+      which is not a document.
+  - id: rfc8594
+    name: Sunset HTTP Header
+    conforms: false
+    evidence: No Sunset or Deprecation header support documented; deprecation is announced in docs prose only.
+  - id: a2a
+    name: A2A Agent Card
+    conforms: false
+    evidence: >-
+      /.well-known/agent-card.json and /.well-known/agent.json probed on embrace.io,
+      api.embrace.io, api-us1.embrace.io, api-eu1.embrace.io, mcp.embrace.io, dash-api.embrace.io,
+      dash.embrace.io and get.embrace.io. No host returned a JSON AgentCard.
+  - id: gdpr
+    name: GDPR
+    conforms: partial
+    evidence: >-
+      GDPR is referenced in the Terms of Service and Embrace offers EU data residency
+      (api-eu1.embrace.io). No certification is claimed on a public page.
+compliance:
+  trust_center: https://trust.embrace.io/
+  certifications_named_publicly: []
+  note: >-
+    Embrace runs a Vanta-hosted Trust Center at trust.embrace.io with a /controls page. The
+    certification list is client-rendered and could not be read anonymously, so no certification
+    is named here and no Compliance pointer is emitted. Presence of the trust center is recorded
+    in security/embrace-trust-center.yml.

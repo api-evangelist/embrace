@@ -1,0 +1,28 @@
+generated: '2026-08-12'
+method: generated
+source: >-
+  https://embrace.io/docs/mcp/ and https://embrace.io/docs/metrics-forwarding/metrics-api/ —
+  grounded in provider-published MCP tool names and provider-published PromQL metric names.
+  Embrace publishes no OpenAPI, so these skills are grounded in the MCP tool list and the
+  documented Metrics API rather than in operationIds. No tool, parameter, metric name or query in
+  these skills was invented.
+note: >-
+  No provider-published Agent Skills or AGENTS.md was found on embrace.io or in the embrace-io
+  GitHub organization, so these are generated.
+skills:
+  - file: embrace-daily-app-health-check.md
+    name: Embrace daily app health check
+    api: mcp/embrace-mcp.yml
+    surface: mcp
+    operations: [list_apps, get_app_details, get_top_versions, list_crashes]
+  - file: embrace-investigate-crash.md
+    name: Investigate an Embrace crash to root cause
+    api: mcp/embrace-mcp.yml
+    surface: mcp
+    operations: [list_crashes, get_crash_details, get_crash_distribution, get_crash_stack_samples, list_exceptions, get_exception_details]
+  - file: embrace-query-metrics-promql.md
+    name: Query the Embrace Metrics API with PromQL
+    api: embrace-metrics-api
+    surface: rest
+    operations: []
+skill_count: 3

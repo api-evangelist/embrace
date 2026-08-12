@@ -1,0 +1,176 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  registry.npmjs.org, repo1.maven.org (maven-metadata.xml), trunk.cocoapods.org,
+  pub.dev API, api.github.com/repos/embrace-io/*, and the Embrace integration docs at
+  https://embrace.io/docs/
+description: >-
+  Embrace ships first-party client SDKs for every mobile and web runtime it supports, all
+  rebuilt on OpenTelemetry, plus build-time tooling for symbol/sourcemap upload. Versions and
+  publish dates below were read from each registry's own metadata endpoint on 2026-08-12.
+  Note: search.maven.org's Solr index is stale for io.embrace (it still reports 7.5.0 from
+  2025-06-09); the authoritative maven-metadata.xml on repo1.maven.org shows 9.1.0. Every
+  first-party package here was published within the last ~5 weeks — no abandonment signal.
+packages:
+  - language: kotlin
+    platform: android
+    registry: maven
+    name: io.embrace:embrace-android-sdk
+    url: https://repo1.maven.org/maven2/io/embrace/embrace-android-sdk/
+    source: https://github.com/embrace-io/embrace-android-sdk
+    install: implementation("io.embrace:embrace-android-sdk:9.1.0")
+    version: 9.1.0
+    published: '2026-07-30'
+    official: true
+    note: >-
+      Latest read from repo1.maven.org maven-metadata.xml (lastUpdated 20260730164121) and
+      corroborated by the GitHub release 9.1.0 published 2026-07-30.
+  - language: kotlin
+    platform: android
+    registry: maven
+    name: io.embrace:embrace-swazzler
+    url: https://repo1.maven.org/maven2/io/embrace/embrace-swazzler/
+    install: classpath("io.embrace:embrace-swazzler:9.1.0")
+    version: 9.1.0
+    published: '2026-07-30'
+    official: true
+    note: >-
+      Gradle plugin that instruments the Android build (bytecode weaving + mapping upload).
+      Released in lockstep with embrace-android-sdk. Sibling artifacts published from the same
+      release train include embrace-android-core, -api, -otel, -okhttp3, -compose, -fcm,
+      -features, -delivery, -payload, -infra and embrace-internal-api.
+  - language: swift
+    platform: ios
+    registry: cocoapods
+    name: EmbraceIO
+    url: https://cocoapods.org/pods/EmbraceIO
+    source: https://github.com/embrace-io/embrace-apple-sdk
+    install: pod 'EmbraceIO', '~> 6.21'
+    version: 6.21.0
+    published: '2026-07-07'
+    official: true
+    note: >-
+      Read from trunk.cocoapods.org/api/v1/pods/EmbraceIO (207 published versions; latest by
+      created_at is 6.21.0 at 2026-07-07T17:21:26Z), matching the GitHub release the same day.
+  - language: swift
+    platform: ios
+    registry: swiftpm
+    name: embrace-apple-sdk
+    url: https://github.com/embrace-io/embrace-apple-sdk
+    install: .package(url:"https://github.com/embrace-io/embrace-apple-sdk.git", from:"6.21.0")
+    version: 6.21.0
+    published: '2026-07-07'
+    official: true
+    note: >-
+      Swift Package Manager has no central metadata endpoint; version and date read from the
+      GitHub release tag 6.21.0 (published 2026-07-07T17:04:01Z), which is the distribution of
+      record for SPM consumers.
+  - language: javascript
+    platform: web
+    registry: npm
+    name: "@embrace-io/web-sdk"
+    url: https://www.npmjs.com/package/@embrace-io/web-sdk
+    source: https://github.com/embrace-io/embrace-web-sdk
+    install: npm install @embrace-io/web-sdk
+    version: 2.25.0
+    published: '2026-07-27'
+    official: true
+  - language: javascript
+    platform: react-native
+    registry: npm
+    name: "@embrace-io/react-native"
+    url: https://www.npmjs.com/package/@embrace-io/react-native
+    source: https://github.com/embrace-io/embrace-react-native-sdk
+    install: npm install @embrace-io/react-native
+    version: 7.0.0
+    published: '2026-07-13'
+    official: true
+  - language: javascript
+    platform: react-native
+    registry: npm
+    name: "@embrace-io/react-native-otlp"
+    url: https://www.npmjs.com/package/@embrace-io/react-native-otlp
+    install: npm install @embrace-io/react-native-otlp
+    version: 7.0.0
+    published: '2026-07-13'
+    official: true
+    note: OTLP exporter bridge for the React Native SDK.
+  - language: javascript
+    platform: react-native
+    registry: npm
+    name: "@embrace-io/react-native-tracer-provider"
+    url: https://www.npmjs.com/package/@embrace-io/react-native-tracer-provider
+    install: npm install @embrace-io/react-native-tracer-provider
+    version: 7.0.0
+    published: '2026-07-13'
+    official: true
+  - language: javascript
+    platform: react-native
+    registry: npm
+    name: "@embrace-io/react-native-navigation"
+    url: https://www.npmjs.com/package/@embrace-io/react-native-navigation
+    install: npm install @embrace-io/react-native-navigation
+    version: 7.0.0
+    published: '2026-07-13'
+    official: true
+  - language: javascript
+    platform: react-native
+    registry: npm
+    name: "@embrace-io/react-native-redux"
+    url: https://www.npmjs.com/package/@embrace-io/react-native-redux
+    install: npm install @embrace-io/react-native-redux
+    version: 7.0.0
+    published: '2026-07-13'
+    official: true
+  - language: dart
+    platform: flutter
+    registry: pub.dev
+    name: embrace
+    url: https://pub.dev/packages/embrace
+    source: https://github.com/embrace-io/embrace-flutter-sdk
+    install: flutter pub add embrace
+    version: 4.9.0
+    published: '2026-07-24'
+    official: true
+  - language: csharp
+    platform: unity
+    registry: npm
+    name: io.embrace.sdk
+    url: https://www.npmjs.com/package/io.embrace.sdk
+    source: https://github.com/embrace-io/embrace-unity-sdk
+    install: Unity Package Manager — scoped registry entry for io.embrace.sdk
+    version: 2.8.1
+    published: '2025-11-26'
+    official: true
+    note: >-
+      DIVERGENCE: the UPM/npm distribution is pinned at 2.8.1 (2025-11-26) while the
+      embrace-unity-sdk GitHub release is v2.8.3 (2026-08-10). Unity consumers pulling from the
+      registry are two patch releases behind the tagged source.
+  - language: javascript
+    platform: build-tooling
+    registry: npm
+    name: "@embrace-io/web-cli"
+    url: https://www.npmjs.com/package/@embrace-io/web-cli
+    install: npm install --save-dev @embrace-io/web-cli
+    version: 2.25.0
+    published: '2026-07-27'
+    official: true
+    binary: embrace-web-cli
+    note: Sourcemap + bundle upload CLI for the Web SDK. Command surface in cli/embrace-cli.yml.
+  - language: swift
+    platform: build-tooling
+    registry: null
+    name: embtool
+    url: https://embrace.io/docs/ios/5x/integration/cli-tool/
+    install: macOS package installer; drops the binary at /usr/local/bin/embtool
+    version: null
+    published: null
+    official: true
+    note: >-
+      Xcode project validation / install / dSYM lookup CLI, distributed as a downloadable macOS
+      installer package from the docs rather than through a registry. There is no metadata
+      endpoint to query and the download link is unpinned, so a consumer cannot tell which
+      build they are getting either — recorded as null rather than guessed.
+sdk_count: 6
+official_count: 14
+platforms: [android, ios, web, react-native, flutter, unity]

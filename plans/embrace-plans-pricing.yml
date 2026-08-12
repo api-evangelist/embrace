@@ -1,0 +1,60 @@
+generated: '2026-08-12'
+method: searched
+source: https://embrace.io/pricing/
+currency: USD
+billing_unit: session
+description: >-
+  Embrace prices on RUM sessions rather than API calls — web and mobile sessions are priced
+  identically. Three published tiers, the top one contact-sales. Logs and synthetic checks are
+  metered separately on top of the session price. The published limits that differ by tier are
+  seat count and event retention, not API quotas.
+plans:
+  - name: Free
+    price: 0
+    currency: USD
+    period: month
+    billing: pay-as-you-go
+    included:
+      sessions: 1000000
+      sessions_period: year
+      users: 5
+      event_retention_days: 3
+    overage: >-
+      None available — users cannot be added and data cannot be ingested beyond the caps without
+      upgrading.
+    contact_sales: false
+  - name: Pro
+    price: 0.80
+    price_unit: per 1,000 sessions
+    minimum: 80
+    minimum_period: month
+    currency: USD
+    billing: pay-as-you-go or annual contract
+    included:
+      users: 10
+      event_retention_days: 14
+    overage: Metered per 1,000 sessions; session discount available on annual contracts.
+    contact_sales: false
+  - name: Enterprise
+    price: null
+    currency: USD
+    billing: annual contract
+    minimum: 80
+    included:
+      users: unlimited
+      event_retention_days: 30
+    overage: Custom.
+    contact_sales: true
+add_ons:
+  - {name: Logs, price_range: '0.50–1.00', unit: per GB, note: "Varies by tier and log type."}
+  - {name: Synthetic monitoring, price: 15, unit: per 1,000 checks, availability: [Pro, Enterprise]}
+  - {name: Background sessions, note: "Discounted relative to foreground sessions."}
+notes:
+  - All RUM sessions are priced identically whether web or mobile.
+  - >-
+    Pricing is per-session ingestion; neither the Metrics API, the Custom Metrics API nor the MCP
+    server is separately metered or priced on the public pricing page.
+  - >-
+    The Custom Metrics API is functionally gated regardless of tier — its token is issued by an
+    Embrace onboarding specialist rather than self-served from the dashboard.
+plan_count: 3

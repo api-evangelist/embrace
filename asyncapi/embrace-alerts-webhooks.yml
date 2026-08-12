@@ -1,0 +1,71 @@
+generated: '2026-08-12'
+method: searched
+source: https://embrace.io/docs/product/settings/integrations/webhooks/
+spec_type: none
+description: >-
+  Embrace publishes no AsyncAPI document. It does ship a real outgoing event surface: a generic
+  alert webhook fired when an alert condition is met, plus documented recipes for wiring it into
+  Jira and PagerDuty. This file captures that webhook catalog. The payload fields below are the
+  ones Embrace itself dereferences in its published PagerDuty transformer code — they are
+  observed from the provider's own sample, not a published schema, and the full payload schema is
+  NOT documented (Embrace's stated way to see it is to point the webhook at webhook.site).
+  Separately, Embrace forwards telemetry outward over OTLP to third-party destinations; that is
+  data forwarding rather than an event API, and is recorded under data_forwarding below.
+
+webhooks:
+  - name: alert
+    direction: outgoing
+    trigger: An Embrace alert condition is met (and again when it returns to Normal).
+    transport: HTTPS POST to a customer-supplied URL
+    content_type: application/json
+    configuration: Embrace dashboard → Settings → Notifications → Webhook Integration (Nickname + Webhook URL, with a TEST button)
+    security:
+      signature: null
+      note: No payload signing, shared secret or verification header is documented.
+    payload_fields:
+      - {path: alert.id, description: "Alert identifier; used as the incident key in the PagerDuty recipe."}
+      - {path: alert.name, description: "Alert name; used as the incident description."}
+      - {path: event.metric_props, description: "Metric properties for the event that fired the alert."}
+      - {path: event.metric_props.new_state, description: "New alert state. The published PagerDuty transformer treats the value 'Normal' as a resolve and anything else as a trigger."}
+      - {path: app.id, description: "Embrace App ID."}
+      - {path: app.name, description: "Application name."}
+      - {path: app.platform, description: "Application platform."}
+      - {path: app.environment, description: "Application environment."}
+      - {path: links.dashboard_url, description: "Deep link back into the Embrace dashboard for this alert."}
+    payload_schema_published: false
+    delivery:
+      retry_policy: >-
+        A webhook is disabled after alerts fail to deliver 3 times in a row. Recovery is manual —
+        edit the webhook and re-test to re-validate it.
+      failure_notification: >-
+        Invalid webhooks trigger an email alert; after 2 failed email notifications a final email
+        alert is sent.
+    integrations:
+      - {target: Jira, mechanism: "Incoming webhook automation rule ('No issues from the webhook') plus a Create issue action.", docs: 'https://embrace.io/docs/product/settings/integrations/webhooks/'}
+      - {target: PagerDuty, mechanism: "Custom Event Transformer (CET) integration; Embrace publishes the JavaScript transformer that maps the payload to a PagerDuty event.", docs: 'https://embrace.io/docs/product/settings/integrations/webhooks/'}
+      - {target: Slack, mechanism: "First-party Slack integration, configured separately.", docs: 'https://embrace.io/docs/product/settings/integrations/slack/'}
+
+data_forwarding:
+  note: >-
+    Not a webhook surface — an outbound telemetry pipeline. Included because it is the other way
+    Embrace data leaves the platform programmatically.
+  protocols: [OTLP, Prometheus remote read via the Metrics API]
+  signals: [metrics, logs, network spans]
+  destinations:
+    - {name: Datadog, docs: 'https://embrace.io/docs/data-destinations/data-dog-setup/'}
+    - {name: Grafana Cloud, docs: 'https://embrace.io/docs/data-destinations/grafana-cloud-setup/'}
+    - {name: New Relic, docs: 'https://embrace.io/docs/data-destinations/new-relic-setup/'}
+    - {name: Honeycomb, docs: 'https://embrace.io/docs/data-destinations/honeycomb/'}
+    - {name: Elastic, docs: 'https://embrace.io/docs/data-destinations/elastic-setup/'}
+    - {name: Splunk, docs: 'https://embrace.io/docs/data-destinations/splunk/'}
+    - {name: Chronosphere, docs: 'https://embrace.io/docs/data-destinations/chronosphere-setup/'}
+    - {name: Observe, docs: 'https://embrace.io/docs/data-destinations/observe-setup/'}
+  custom_metric_destinations: [metrics_api, newrelic, datadog, grafana_cloud]
+  inbound_note: >-
+    In the other direction the SDKs export spans and logs to any OTel Collector via
+    OtlpGrpcSpanExporter / OtlpHttpSpanExporter (Android), Swift OTel exporters (Apple), and
+    addSpanExporter / addLogRecordExporter (Flutter, React Native).
+  docs: https://embrace.io/docs/open-telemetry/integration/
+
+webhook_count: 1
+asyncapi_published: false

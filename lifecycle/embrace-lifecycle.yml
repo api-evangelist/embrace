@@ -1,0 +1,101 @@
+generated: '2026-08-12'
+method: searched
+source: https://embrace.io/docs/metrics-forwarding/metrics-api/metrics-deprecated/
+docs:
+  - https://embrace.io/docs/android/versioning/
+  - https://embrace.io/docs/flutter/versioning/
+  - https://embrace.io/docs/product/changelog/
+  - https://status.embrace.io/
+description: >-
+  Embrace's lifecycle discipline lives at two levels that behave very differently. The SDKs carry
+  an explicit, written versioning strategy with stated support windows for the toolchains they
+  depend on. The HTTP APIs carry no written versioning or deprecation policy at all — but Embrace
+  demonstrably practises one: the legacy Metrics API metric set was marked deprecated in October
+  2023 and not removed until April 2026, a roughly 30-month runway, with a published replacement
+  table. Practice without policy: real behaviour a customer cannot hold them to in writing.
+
+versioning:
+  api:
+    scheme: uri-path
+    current: v1
+    detail: >-
+      /custom-metrics/api/v1/... on the Custom Metrics API and the Prometheus /api/v1 surface on
+      the Metrics API. No published policy for how or when v1 changes.
+    policy_url: null
+  sdk:
+    scheme: semver
+    per_platform: true
+    docs:
+      android: https://embrace.io/docs/android/versioning/
+      flutter: https://embrace.io/docs/flutter/versioning/
+    current:
+      android: 9.1.0
+      ios: 6.21.0
+      web: 2.25.0
+      react-native: 7.0.0
+      flutter: 4.9.0
+      unity: 2.8.3
+    policy: >-
+      Written strategy for the Android SDK: built against the latest Kotlin and targeting up to
+      four versions behind it; supports the latest two major versions of AGP and Gradle; aligns
+      minSdk with the minimum required by Jetpack Compose; tracks the latest stable OpenTelemetry
+      Java/Kotlin APIs. Dropping support for older Kotlin versions happens only in a major SDK
+      release.
+    minimums_8_0_0_and_newer:
+      kotlin: 2.0.21
+      gradle: 8.0.2
+      agp: 8.0.2
+      minSdk: 26   # 21 with desugaring enabled (Gradle 8.4 / AGP 8.3.0)
+      minCompileSdk: 34
+      build_jdk: 17
+      sourceCompatibility: 11
+
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  practice_documented: true
+  evidence:
+    - url: https://embrace.io/docs/metrics-forwarding/metrics-api/metrics-deprecated/
+      detail: >-
+        Ten Metrics API metrics carrying a _deprecated suffix were deprecated in October 2023 and
+        fully removed in April 2026 — approximately 30 months of notice — with a Replacements
+        section giving the query rewrite for each (e.g. daily_crash_free_session_rate becomes
+        1 - daily_crashes_total / daily_sessions_total, and by_device cuts are now supported on
+        every metric).
+  deprecated_surfaces:
+    - {surface: "Metrics API *_deprecated metric family", deprecated: '2023-10', removed: '2026-04', replacement_documented: true}
+    - {surface: "Android SDK legacy integration path", docs: 'https://embrace.io/docs/android/legacy-integration/', status: legacy}
+    - {surface: "iOS SDK 5.x", docs: 'https://embrace.io/docs/ios/5x/integration/', status: superseded-by-6x, migration_guide: 'https://embrace.io/docs/ios/6x/getting-started/migration-guide/'}
+    - {surface: "React Native SDK 4.x", docs: 'https://embrace.io/docs/react-native/4x/integration/', status: superseded}
+    - {surface: "Android moments API", docs: 'https://embrace.io/docs/android/features/moments/', status: superseded-by-traces}
+
+status_page:
+  url: https://status.embrace.io/
+  provider: Atlassian Statuspage
+  machine_readable:
+    - {path: /api/v2/status.json, status: 200}
+    - {path: /history.rss, status: 200}
+    - {path: /history.atom, status: 200}
+  page_id: 01KTPJ7SC2Z7HHJ7X9TFZGHKDW
+
+changelog:
+  url: https://embrace.io/docs/product/changelog/
+  detail: changelog/embrace-changelog.yml
+  per_sdk:
+    android: https://embrace.io/docs/android/changelog/
+    ios: https://embrace.io/docs/ios/changelog/
+    flutter: https://embrace.io/docs/flutter/changelog/
+
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA or uptime commitment was found. The Terms of Service at
+    https://embrace.io/terms-of-service/ is the only published contractual document.
+
+deprecated_operations: []
+gaps:
+  - No published API deprecation policy or Sunset/Deprecation header support (RFC 8594).
+  - No published SLA or uptime target.
+  - No public roadmap page (https://embrace.io/roadmap/ returns 404).

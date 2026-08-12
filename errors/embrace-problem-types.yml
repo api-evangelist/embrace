@@ -1,0 +1,75 @@
+generated: '2026-08-12'
+method: searched
+source: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+format: custom-json
+description: >-
+  Embrace does not publish an RFC 9457 problem+json contract. The Custom Metrics API reference is
+  the one place where the error surface is documented in full: a flat status-code table shared by
+  every endpoint, and a single-field JSON envelope. The envelope shape below is the one Embrace
+  prints for its own 500 example; no other error body is published, so the field is recorded once
+  and not extrapolated across statuses.
+envelope:
+  content_type: application/json
+  fields:
+    - {name: message, type: string, description: "Human-readable error description."}
+  example: '{"message": "we had an internal error, please try again later"}'
+  note: >-
+    No machine-readable error code, no type URI, no request id in the published envelope. An
+    agent has only the HTTP status and an English string to branch on.
+problems:
+  - status: 400
+    title: Bad request
+    detail: The url params and body were not correct.
+    retryable: false
+    remediation: >-
+      Validate app_id, custom_metric_name, and the body (name, metric, group_by, filters,
+      time_granularity, data_destination) against the reference before retrying.
+    source: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+  - status: 403
+    title: Forbidden
+    detail: You don't have access to execute that operation.
+    retryable: false
+    remediation: >-
+      Confirm the Authorization header carries the Custom Metrics API token (a different token
+      from the Metrics API token) and that it is scoped to the app_id in the path.
+    source: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+  - status: 404
+    title: Not found
+    detail: Metric that you are trying to consume doesn't exist.
+    retryable: false
+    source: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+  - status: 409
+    title: Conflict
+    detail: Metric that you are trying to create already exists.
+    retryable: false
+    remediation: >-
+      Custom metric names are unique per app. GET the metric by name instead of recreating it.
+      This is the closest thing Embrace has to an idempotency contract on create — a duplicate
+      create is rejected rather than replayed.
+    source: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+  - status: 500
+    title: Internal error
+    detail: There was an internal error and you should retry later.
+    retryable: true
+    example_body: '{"message": "we had an internal error, please try again later"}'
+    source: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+success_statuses:
+  - {status: 200, detail: "Request was successful and a body with new information is returned."}
+  - {status: 204, detail: "Request was successful and no body is returned."}
+other_surfaces:
+  - api: embrace-metrics-api
+    note: >-
+      The Metrics API is the Prometheus HTTP API (/api/v1) behind a bearer token; Embrace
+      publishes no Embrace-specific error catalog for it. Prometheus-standard error responses
+      ({"status":"error","errorType":...,"error":...}) apply by virtue of the protocol, but
+      Embrace does not document them, so they are not asserted here.
+  - api: embrace-mcp-server
+    note: >-
+      JSON-RPC 2.0 error objects per the MCP specification. Anonymous requests were observed
+      returning HTTP 401 with no JSON-RPC body. No Embrace-specific tool error codes are
+      published.
+  - surface: webhooks
+    note: >-
+      Outgoing alert webhooks are disabled after 3 consecutive delivery failures, with two email
+      warnings and a final notice. See asyncapi/embrace-alerts-webhooks.yml.
+problem_count: 5

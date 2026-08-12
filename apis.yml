@@ -1,23 +1,189 @@
 aid: embrace
 name: Embrace
-description: 'Embrace is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Embrace is a user-focused observability platform for mobile and web applications, built on
+  OpenTelemetry. Its SDKs for iOS, Android, React Native, Flutter, Unity and the browser capture
+  full-fidelity session, crash, exception, log, trace and network telemetry from real users, and
+  the platform turns that into crash-free rates, user journeys, synthetics and custom dashboards.
+  For programmatic access Embrace publishes a Prometheus-compatible Metrics API queried with
+  PromQL, a Custom Metrics API for creating and managing derived metrics, OTLP forwarding to
+  third-party destinations such as Datadog, Grafana Cloud, New Relic, Honeycomb, Elastic, Splunk,
+  Chronosphere and Observe, outgoing alert webhooks, and a hosted Model Context Protocol server
+  that exposes 21 read tools over crash, exception, log, span, session and network data to AI
+  assistants using OAuth 2.0 or service-account bearer tokens.
+image: https://embrace.io/wp-content/uploads/2023/07/Embrace-Logo-Pref-Lead-on-Yellow_1200x627.png
 url: https://raw.githubusercontent.com/api-evangelist/embrace/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
 - Company
-apis: []
+- Observability
+- Monitoring
+- Mobile
+- Real User Monitoring
+- OpenTelemetry
+- Metrics
+- Crash Reporting
+- Application Performance Monitoring
+- Developer Tools
+- Model Context Protocol
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: embrace-metrics-api
+  name: Embrace Metrics API
+  description: >-
+    A Prometheus-compatible read API for querying Embrace metrics with PromQL. Standard
+    Embrace metrics and any Custom Metrics an organization has created are queryable across one
+    app, several apps, or every app in the organization by filtering on app_id. Authenticated
+    with the organization's Metrics API bearer token from Settings → Organization → API. Any
+    PromQL client works against it — the docs ship Node (prometheus-query) and Python
+    (prometheus-api-client) samples against the /api/v1 Prometheus HTTP API surface.
+  humanURL: https://embrace.io/docs/metrics-forwarding/metrics-api/
+  baseURL: https://api.embrace.io/metrics
+  tags:
+  - Metrics
+  - PromQL
+  - Prometheus
+  - Observability
+  - Monitoring
+  properties:
+  - type: Documentation
+    url: https://embrace.io/docs/metrics-forwarding/metrics-api/
+  - type: APIReference
+    url: https://embrace.io/docs/metrics-forwarding/metrics-api/
+  - type: Examples
+    url: https://embrace.io/docs/metrics-forwarding/metrics-api/code-samples/
+  - type: Authentication
+    url: authentication/embrace-authentication.yml
+- aid: embrace-custom-metrics-api
+  name: Embrace Custom Metrics API
+  description: >-
+    A REST management API for creating, retrieving and deleting the custom metrics of an
+    Embrace organization. A custom metric is defined from a base Embrace metric plus group_by
+    dimensions, a filter tree, one or more time granularities (five_minute, hourly, daily) and a
+    list of data destinations (metrics_api, newrelic, datadog, grafana_cloud). Authenticated with
+    a dedicated Custom Metrics API bearer token issued by an Embrace onboarding specialist.
+  humanURL: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+  baseURL: https://api.embrace.io/custom-metrics
+  tags:
+  - Metrics
+  - Custom Metrics
+  - Observability
+  - Management
+  - Data Forwarding
+  properties:
+  - type: Documentation
+    url: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+  - type: APIReference
+    url: https://embrace.io/docs/metrics-forwarding/custom-metrics/custom-metrics-api/
+  - type: ErrorCatalog
+    url: errors/embrace-problem-types.yml
+  - type: Authentication
+    url: authentication/embrace-authentication.yml
+- aid: embrace-mcp-server
+  name: Embrace MCP Server
+  description: >-
+    A hosted Model Context Protocol server over Streamable HTTP that exposes an Embrace
+    organization's real-user observability data to MCP-capable AI assistants. Twenty-one published
+    tools span apps, crashes, exceptions, logs, sessions, root spans and network domains and
+    endpoints. Authentication is either an interactive OAuth 2.0 authorization-code flow with
+    PKCE against dash-api.embrace.io, or a static service-account bearer token (emb_sa_ prefix)
+    carrying the mcp:tools:call scope plus mcp:read and/or mcp:write.
+  humanURL: https://embrace.io/docs/mcp/
+  baseURL: https://mcp.embrace.io/mcp
+  tags:
+  - Model Context Protocol
+  - MCP
+  - Agents
+  - Observability
+  - AI
+  properties:
+  - type: MCPServer
+    url: mcp/embrace-mcp.yml
+  - type: Documentation
+    url: https://embrace.io/docs/mcp/
+  - type: OAuthScopes
+    url: scopes/embrace-scopes.yml
 common:
+- type: DomainSecurity
+  url: security/embrace-domain-security.yml
+- type: VulnerabilityDisclosure
+  url: security/embrace-vulnerability-disclosure.yml
 - type: Website
-  url: https://forgeglobal.com/embrace_stock/
+  url: https://embrace.io/
+- type: DeveloperPortal
+  url: https://embrace.io/docs/
+- type: Documentation
+  url: https://embrace.io/docs/
+- type: APIReference
+  url: https://embrace.io/docs/metrics-forwarding/metrics-api/
+- type: GettingStarted
+  url: https://embrace.io/docs/ios/6x/getting-started/
+- type: Support
+  url: https://embraceio-community.slack.com/join/shared_invite/zt-46iaieyz5-_684dnJ8U1yspqeQf~AGJA
+- type: Blog
+  url: https://embrace.io/blog/
+- type: BlogRSS
+  url: https://embrace.io/feed/
+- type: GitHubOrganization
+  url: https://github.com/embrace-io
+- type: Pricing
+  url: https://embrace.io/pricing/
+- type: SignUp
+  url: https://dash.embrace.io/signup
+- type: Login
+  url: https://dash.embrace.io/login
+- type: TermsOfService
+  url: https://embrace.io/terms-of-service/
+- type: PrivacyPolicy
+  url: https://embrace.io/privacy/
+- type: StatusPage
+  url: https://status.embrace.io/
+- type: ChangeLog
+  url: https://embrace.io/docs/product/changelog/
+- type: TrustCenter
+  url: https://trust.embrace.io/
+- type: Packages
+  url: packages/embrace-packages.yml
+- type: SDKs
+  url: packages/embrace-packages.yml
+- type: CLI
+  url: cli/embrace-cli.yml
+- type: WellKnown
+  url: well-known/embrace-well-known.yml
+- type: MCPServer
+  url: mcp/embrace-mcp.yml
+- type: LLMsTxt
+  url: llms/embrace-llms.txt
+- type: Authentication
+  url: authentication/embrace-authentication.yml
+- type: OAuthScopes
+  url: scopes/embrace-scopes.yml
+- type: Conventions
+  url: conventions/embrace-conventions.yml
+- type: ErrorCatalog
+  url: errors/embrace-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/embrace-lifecycle.yml
+- type: Conformance
+  url: conformance/embrace-conformance.yml
+- type: Webhooks
+  url: asyncapi/embrace-alerts-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Plans
+  url: plans/embrace-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/embrace-rate-limits.yml
+x-enrichment:
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 28
+  pass: local-v1

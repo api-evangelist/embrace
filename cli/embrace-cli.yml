@@ -1,0 +1,73 @@
+generated: '2026-08-12'
+method: searched
+source: https://embrace.io/docs/ios/5x/integration/cli-tool/
+docs:
+  - https://embrace.io/docs/web/getting-started/sourcemap-uploads/
+  - https://embrace.io/docs/ios/6x/getting-started/dsym-upload/
+  - https://embrace.io/docs/android/ci-mapping-upload/
+description: >-
+  Embrace ships two first-party command-line tools, both build-time rather than API clients:
+  embrace-web-cli for uploading JavaScript bundles and sourcemaps, and embtool for validating and
+  configuring an Xcode project for the Apple SDK. Neither exposes the Metrics, Custom Metrics or
+  MCP surfaces — there is no general-purpose Embrace API CLI.
+clis:
+  - name: embrace-web-cli
+    binary: embrace-web-cli
+    package: "@embrace-io/web-cli"
+    registry: npm
+    version: 2.25.0
+    published: '2026-07-27'
+    install:
+      - npm install --save-dev @embrace-io/web-cli
+      - yarn add -D @embrace-io/web-cli
+    invocation: npx embrace-web-cli
+    auth: Symbol Upload API token (-t) plus the Embrace App ID (-a), both from Settings → API.
+    commands:
+      - command: upload
+        description: >-
+          Upload built JS bundles and sourcemaps so exception stack traces symbolicate in the
+          dashboard. Injects a comment and a short function into the end of each bundle file, so
+          it must run BEFORE the files are packaged into a Docker image or deployment archive.
+        flags:
+          - {flag: "-a, --app-id", description: "Embrace App ID."}
+          - {flag: "-t, --token", description: "Embrace Symbol Upload API token."}
+          - {flag: "-p, --path", description: "Path to the built JS files."}
+          - {flag: "--app-version", description: "Inject a build-time app version into the bundle. Takes precedence over appVersion passed to initSDK, so do not set both."}
+        example: 'npx embrace-web-cli upload -a "APP_ID" -t "UPLOAD_TOKEN" -p "JS_BUILD_PATH"'
+    caveats:
+      - >-
+        Symbolication of function names works only for functions declared with the function
+        keyword; functions assigned to consts or variables stay unsymbolicated. File names, line
+        and column numbers always symbolicate.
+    docs: https://embrace.io/docs/web/getting-started/sourcemap-uploads/
+  - name: embtool
+    binary: embtool
+    registry: null
+    version: null
+    published: null
+    install: >-
+      macOS package installer downloaded from the docs; installs to /usr/local/bin/embtool. No
+      registry and no pinned download URL, so the installed version is not determinable.
+    platform: macOS / Xcode
+    commands:
+      - command: project validate
+        usage: embtool project validate <path-to-xcodeproj>
+        description: >-
+          Verify project configuration — presence of Embrace-Info.plist, presence of the Embrace
+          Run Script build phase, the DEBUG_INFORMATION_FORMAT build setting, and the validity of
+          the Embrace API_KEY and upload EMBRACE_TOKEN.
+      - command: project install
+        usage: embtool project install --api-key <api-key> --token <token> <path-to-xcodeproj>
+        description: >-
+          Edit the .xcodeproj to inject Embrace configuration — set DEBUG_INFORMATION_FORMAT to
+          include dSYM files and add the Embrace Run Script phase that uploads dSYMs. Run from a
+          clean VCS state so the diff is legible.
+      - command: dsym lookup
+        usage: embtool dsym lookup --scheme <my-scheme> <path-to-xcodeproj>
+        description: >-
+          Search ~/Library/Developer/Xcode/DerivedData for dSYM files produced by a build.
+    docs: https://embrace.io/docs/ios/5x/integration/cli-tool/
+ci_tooling:
+  - {name: action-symbol-upload, kind: github-action, url: 'https://github.com/embrace-io/action-symbol-upload', description: "GitHub Action to upload symbol files for a mobile application to Embrace."}
+  - {name: bitrise-symbol-upload, kind: bitrise-step, url: 'https://github.com/embrace-io/bitrise-symbol-upload', description: "Symbol Upload for Embrace step for Bitrise."}
+cli_count: 2
