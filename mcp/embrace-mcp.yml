@@ -3,21 +3,22 @@ method: searched
 status: published
 source: https://embrace.io/docs/mcp/
 supporting_sources:
-  - https://embrace.io/docs/product/settings/service-accounts/
-  - https://embrace.io/docs/product/changelog/
-  - https://mcp.embrace.io/.well-known/oauth-protected-resource
-description: >-
-  The Embrace MCP server exposes an organization's real-user mobile and web observability data —
-  apps, crashes, exceptions, logs, sessions, spans and network endpoints — to MCP-capable AI
-  assistants. Shipped in beta December 2025, expanded with log/span/exception/crash tooling and
-  web-app support in March 2026, and given service-account bearer-token auth in May 2026.
+- https://embrace.io/docs/product/settings/service-accounts/
+- https://embrace.io/docs/product/changelog/
+- https://mcp.embrace.io/.well-known/oauth-protected-resource
+description: The Embrace MCP server exposes an organization's real-user mobile and web observability data
+  — apps, crashes, exceptions, logs, sessions, spans and network endpoints — to MCP-capable AI assistants.
+  Shipped in beta December 2025, expanded with log/span/exception/crash tooling and web-app support in
+  March 2026, and given service-account bearer-token auth in May 2026.
 server:
   name: embrace
-  transport: http            # Streamable HTTP
+  transport: http
   url: https://mcp.embrace.io/mcp
   availability: All Embrace users; supports iOS, Android, React Native, Unity and web apps.
 auth:
-  methods: [oauth2, bearer]
+  methods:
+  - oauth2
+  - bearer
   oauth2:
     flow: authorization_code
     pkce: S256
@@ -27,69 +28,133 @@ auth:
     registration_endpoint: https://dash-api.embrace.io/oauth/register
     revocation_endpoint: https://dash-api.embrace.io/oauth/revoke
     jwks_uri: https://dash-api.embrace.io/.well-known/jwks.json
-    scopes_supported: [mcp:read, mcp:write, mcp:tools:call]
+    scopes_supported:
+    - mcp:read
+    - mcp:write
+    - mcp:tools:call
     discovery: well-known/embrace-mcp-oauth-authorization-server.json
     protected_resource: well-known/embrace-mcp-oauth-protected-resource.json
-    note: >-
-      Interactive browser flow, recommended for local developer use in Cursor, Claude Code and
-      Opencode. The token is tied to an Embrace user and carries that user's app permissions.
+    note: Interactive browser flow, recommended for local developer use in Cursor, Claude Code and Opencode.
+      The token is tied to an Embrace user and carries that user's app permissions.
   bearer:
     header: Authorization
-    format: "Bearer emb_sa_<43 chars>"
+    format: Bearer emb_sa_<43 chars>
     env: EMBRACE_API_TOKEN
     issued_from: Settings → Organization → API → Service Accounts
-    required_scopes: [mcp:tools:call]
-    optional_scopes: [mcp:read, mcp:write]
-    note: >-
-      Static token attached to a service account — a non-human identity scoped to all apps or an
-      explicit app list. Intended for agent workflows, CI jobs and shared tooling where no
-      browser is available. Multiple live tokens per account enable zero-downtime rotation.
+    required_scopes:
+    - mcp:tools:call
+    optional_scopes:
+    - mcp:read
+    - mcp:write
+    note: Static token attached to a service account — a non-human identity scoped to all apps or an explicit
+      app list. Intended for agent workflows, CI jobs and shared tooling where no browser is available.
+      Multiple live tokens per account enable zero-downtime rotation.
 x-probe:
   fetched: '2026-08-12'
   method: POST https://mcp.embrace.io/mcp {"jsonrpc":"2.0","id":1,"method":"tools/list"}
   http_status: 401
-  result: >-
-    tools/list and initialize both return 401 anonymously. The live inputSchema for each tool is
-    auth-gated and requires an authenticated introspection with mcp:tools:call. The tool names,
-    categories and descriptions below are the provider-published list from
-    https://embrace.io/docs/mcp/ — no schemas are asserted here because none could be observed.
+  result: tools/list and initialize both return 401 anonymously. The live inputSchema for each tool is
+    auth-gated and requires an authenticated introspection with mcp:tools:call. The tool names, categories
+    and descriptions below are the provider-published list from https://embrace.io/docs/mcp/ — no schemas
+    are asserted here because none could be observed.
 tool_count: 21
 tools:
-  - {name: list_apps, category: app, description: "List and filter applications in your Embrace workspace."}
-  - {name: get_app_details, category: app, description: "Get health metrics, crash-free rates, and session counts for an app."}
-  - {name: get_top_versions, category: app, description: "Identify which app versions are most widely used."}
-  - {name: list_crashes, category: crash, description: "List top crashes ranked by frequency."}
-  - {name: get_crash_details, category: crash, description: "Get detailed information about a specific crash group."}
-  - {name: get_crash_distribution, category: crash, description: "Get distribution of a crash group across a dimension (OS version, device model, country, etc.) compared against session baselines."}
-  - {name: get_crash_stack_samples, category: crash, description: "Fetch actual stack traces for crash analysis."}
-  - {name: list_exceptions, category: exception, description: "List top exceptions ranked by frequency and user impact."}
-  - {name: get_exception_details, category: exception, description: "Get detailed information about a specific exception group, including counts, affected users, and history."}
-  - {name: list_logs, category: log, description: "List top log messages grouped by aggregated message pattern."}
-  - {name: get_log_details, category: log, description: "Get detailed information about a specific log group including message template and token analysis."}
-  - {name: get_log_distribution, category: log, description: "Get distribution of a log group across a dimension compared against session baselines."}
-  - {name: get_session_distribution, category: session, description: "Get session counts distributed across a single dimension."}
-  - {name: list_root_spans, category: span, description: "List all root spans in an app with performance metrics and outcome rates."}
-  - {name: get_root_span_distribution, category: span, description: "Get distribution by various dimensions for a specific root span."}
-  - {name: list_network_domains, category: network, description: "List all domains an app communicates with, with basic health indicators."}
-  - {name: list_network_endpoints, category: network, description: "List endpoints ranked by latency, errors, or volume."}
-  - {name: get_network_endpoint_errors, category: network, description: "Get error breakdown for a specific endpoint by HTTP status code and connection error type."}
-  - {name: get_network_endpoint_latency, category: network, description: "Get latency distribution and percentiles for a specific endpoint."}
-  - {name: get_network_endpoint_timeseries, category: network, description: "Get time-series metrics showing how an endpoint's performance changes over time."}
-  - {name: get_network_endpoint_breakdown, category: network, description: "Break down endpoint performance by dimension — country, OS version, app version, or device model."}
+- name: list_apps
+  category: app
+  description: List and filter applications in your Embrace workspace.
+- name: get_app_details
+  category: app
+  description: Get health metrics, crash-free rates, and session counts for an app.
+- name: get_top_versions
+  category: app
+  description: Identify which app versions are most widely used.
+- name: list_crashes
+  category: crash
+  description: List top crashes ranked by frequency.
+- name: get_crash_details
+  category: crash
+  description: Get detailed information about a specific crash group.
+- name: get_crash_distribution
+  category: crash
+  description: Get distribution of a crash group across a dimension (OS version, device model, country,
+    etc.) compared against session baselines.
+- name: get_crash_stack_samples
+  category: crash
+  description: Fetch actual stack traces for crash analysis.
+- name: list_exceptions
+  category: exception
+  description: List top exceptions ranked by frequency and user impact.
+- name: get_exception_details
+  category: exception
+  description: Get detailed information about a specific exception group, including counts, affected users,
+    and history.
+- name: list_logs
+  category: log
+  description: List top log messages grouped by aggregated message pattern.
+- name: get_log_details
+  category: log
+  description: Get detailed information about a specific log group including message template and token
+    analysis.
+- name: get_log_distribution
+  category: log
+  description: Get distribution of a log group across a dimension compared against session baselines.
+- name: get_session_distribution
+  category: session
+  description: Get session counts distributed across a single dimension.
+- name: list_root_spans
+  category: span
+  description: List all root spans in an app with performance metrics and outcome rates.
+- name: get_root_span_distribution
+  category: span
+  description: Get distribution by various dimensions for a specific root span.
+- name: list_network_domains
+  category: network
+  description: List all domains an app communicates with, with basic health indicators.
+- name: list_network_endpoints
+  category: network
+  description: List endpoints ranked by latency, errors, or volume.
+- name: get_network_endpoint_errors
+  category: network
+  description: Get error breakdown for a specific endpoint by HTTP status code and connection error type.
+- name: get_network_endpoint_latency
+  category: network
+  description: Get latency distribution and percentiles for a specific endpoint.
+- name: get_network_endpoint_timeseries
+  category: network
+  description: Get time-series metrics showing how an endpoint's performance changes over time.
+- name: get_network_endpoint_breakdown
+  category: network
+  description: Break down endpoint performance by dimension — country, OS version, app version, or device
+    model.
 known_parameters:
-  note: >-
-    Parameter names published in the docs' use-case walkthroughs, not a full schema. Recorded
-    only because the provider names them explicitly.
+  note: Parameter names published in the docs' use-case walkthroughs, not a full schema. Recorded only
+    because the provider names them explicitly.
   parameters:
-    - {tool: list_crashes, parameter: app_versions, description: "Filter crash results to specific app versions."}
-    - {tool: get_app_details, parameter: time_window, description: "Comparison period for app health metrics."}
+  - tool: list_crashes
+    parameter: app_versions
+    description: Filter crash results to specific app versions.
+  - tool: get_app_details
+    parameter: time_window
+    description: Comparison period for app health metrics.
 clients_documented:
-  - {client: Cursor, config: mcp.json, transport: http}
-  - {client: Claude Code, config: ".mcp.json / claude mcp add --transport http embrace https://mcp.embrace.io/mcp", transport: http}
-  - {client: Opencode, config: opencode.json, transport: remote}
+- client: Cursor
+  config: mcp.json
+  transport: http
+- client: Claude Code
+  config: .mcp.json / claude mcp add --transport http embrace https://mcp.embrace.io/mcp
+  transport: http
+- client: Opencode
+  config: opencode.json
+  transport: remote
 second_mcp_surface:
-  note: >-
-    embrace.io (the WordPress marketing site) separately advertises a WordPress-plugin MCP
-    resource at https://embrace.io/wp-json/mcp/mcp-oauth-server with a single "mcp" scope. It is
-    a site-content surface, not the Embrace product API, and it also returns 401 anonymously.
-    Recorded so the two are not conflated.
+  note: embrace.io (the WordPress marketing site) separately advertises a WordPress-plugin MCP resource
+    at https://embrace.io/wp-json/mcp/mcp-oauth-server with a single "mcp" scope. It is a site-content
+    surface, not the Embrace product API, and it also returns 401 anonymously. Recorded so the two are
+    not conflated.
+deployment:
+  mode: remote
+  endpoint: https://mcp.embrace.io/mcp
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census
