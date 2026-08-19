@@ -15,7 +15,7 @@ image: https://embrace.io/wp-content/uploads/2023/07/Embrace-Logo-Pref-Lead-on-Y
 url: https://raw.githubusercontent.com/api-evangelist/embrace/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
