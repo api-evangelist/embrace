@@ -29,6 +29,18 @@ tags:
 - Crash Reporting
 - Application Performance Monitoring
 - Developer Tools
+- MCP
+tags_raw:
+- Company
+- Observability
+- Monitoring
+- Mobile
+- Real User Monitoring
+- OpenTelemetry
+- Metrics
+- Crash Reporting
+- Application Performance Monitoring
+- Developer Tools
 - Model Context Protocol
 maintainers:
 - FN: Kin Lane
@@ -99,6 +111,11 @@ apis:
   humanURL: https://embrace.io/docs/mcp/
   baseURL: https://mcp.embrace.io/mcp
   tags:
+  - MCP
+  - Agents
+  - Observability
+  - Artificial Intelligence
+  tags_raw:
   - Model Context Protocol
   - MCP
   - Agents
