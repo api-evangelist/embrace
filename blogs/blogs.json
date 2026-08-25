@@ -2,6 +2,13 @@
   "repo": "embrace",
   "feeds": [
     {
+      "source": "https://embrace.io/feed/",
+      "feed_url": "https://embrace.io/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://embraceio-community.slack.com/join/shared_invite/zt-46iaieyz5-_684dnJ8U1yspqeQf~AGJA",
       "error": "HTTPError"
     },
@@ -13,6 +20,6 @@
       "method": "discovered"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-08-15T12:22:01Z"
+  "post_count": 10,
+  "fetched": "2026-08-22T20:20:02Z"
 }
