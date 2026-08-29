@@ -11,6 +11,17 @@ description: >-
   Chronosphere and Observe, outgoing alert webhooks, and a hosted Model Context Protocol server
   that exposes 21 read tools over crash, exception, log, span, session and network data to AI
   assistants using OAuth 2.0 or service-account bearer tokens.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://embrace.io/wp-content/uploads/2023/07/Embrace-Logo-Pref-Lead-on-Yellow_1200x627.png
 url: https://raw.githubusercontent.com/api-evangelist/embrace/refs/heads/main/apis.yml
 x-type: company
