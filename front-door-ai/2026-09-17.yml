@@ -1,0 +1,26 @@
+# Front Door AI Index — embrace — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: embrace
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: embrace.io
+  final_host: embrace.io
+  ownership: own
+  owner: embrace
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 11
+  host_score: 11
+  density: 8.85
+  words: 1243
+  tiers:
+    agentic: 2
+    core: 9
+    model: 0
+  ambiguous: 0
+  top_terms:
+    AI: 9
+    MCP: 2
