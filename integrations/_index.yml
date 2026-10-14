@@ -56,3 +56,29 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: embrace-datadog-own
+  label: Datadog (own)
+  partner: datadog
+  partner_name: Datadog (own)
+  category: Issue Tracking
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://github.com/DataDog/integrations-extras/tree/master/embrace_mobile
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: embrace-grafana-own
+  label: Grafana (own)
+  partner: grafana-com
+  partner_name: Grafana (own)
+  category: Application
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://grafana.com/grafana/plugins/embraceio-metric-app/
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
