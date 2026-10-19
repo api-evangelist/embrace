@@ -3,12 +3,19 @@ method: searched
 checked:
 - datadog/integrations/datadog-integration-edges.yml
 - grafana-com/integrations/grafana-com-integration-edges.yml
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
 - https://focus.finops.org/data-generators/
 - https://github.com/cncf/k8s-conformance
 - https://github.com/cncf/landscape
 - https://github.com/marketplace?type=actions
 - https://github.com/open-telemetry/opentelemetry.io/blob/main/data/ecosystem/vendors.yaml
 - https://github.com/open-telemetry/opentelemetry.io/blob/main/data/registry/
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
 - unity/integrations/unity-integration-edges.yml
 marketplace_apps: []
 edges:
@@ -158,6 +165,138 @@ edges:
   category: Unity Verified Solutions
   publisher_verified:
   - Unity Verified Solution
+- partner_name: Maven Central
+  partner: maven-central
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Java/JVM)
+  evidence: https://central.sonatype.com/artifact/io.embrace/embrace-android-sdk
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Maven Central (public registry JSON)
+    spec_file: null
+    language: Java/JVM
+    packages:
+    - name: io.embrace:embrace-android-sdk
+      version: 9.3.1
+      released: '2026-10-15'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/io.embrace/embrace-android-sdk
+      repo_leg: github-org:embrace-io
+      publisher_leg: groupId:embrace.io
+      matched_by: domain
+    - name: io.embrace:embrace-swazzler
+      version: 7.9.3
+      released: '2025-11-11'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/io.embrace/embrace-swazzler
+      repo_leg: github-org:embrace-io
+      publisher_leg: groupId:embrace.io
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/@embrace-io/react-native
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@embrace-io/react-native'
+      version: 7.2.0
+      released: '2026-10-08'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@embrace-io/react-native
+      repo_leg: github-org:embrace-io
+      publisher_leg: email:embrace.io
+      matched_by: domain
+    - name: '@embrace-io/react-native-navigation'
+      version: 7.2.0
+      released: '2026-10-08'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@embrace-io/react-native-navigation
+      repo_leg: github-org:embrace-io
+      publisher_leg: email:embrace.io
+      matched_by: domain
+    - name: '@embrace-io/react-native-otlp'
+      version: 7.2.0
+      released: '2026-10-08'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@embrace-io/react-native-otlp
+      repo_leg: github-org:embrace-io
+      publisher_leg: email:embrace.io
+      matched_by: domain
+    - name: '@embrace-io/react-native-redux'
+      version: 7.2.0
+      released: '2026-10-08'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@embrace-io/react-native-redux
+      repo_leg: github-org:embrace-io
+      publisher_leg: email:embrace.io
+      matched_by: domain
+    - name: '@embrace-io/react-native-tracer-provider'
+      version: 7.2.0
+      released: '2026-10-08'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@embrace-io/react-native-tracer-provider
+      repo_leg: github-org:embrace-io
+      publisher_leg: email:embrace.io
+      matched_by: domain
+    - name: '@embrace-io/web-cli'
+      version: 2.30.0
+      released: '2026-10-06'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@embrace-io/web-cli
+      repo_leg: github-org:embrace-io
+      publisher_leg: email:embrace.io
+      matched_by: domain
+    - name: '@embrace-io/web-sdk'
+      version: 2.30.0
+      released: '2026-10-06'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@embrace-io/web-sdk
+      repo_leg: github-org:embrace-io
+      publisher_leg: email:embrace.io
+      matched_by: domain
+    - name: io.embrace.sdk
+      version: 2.9.0
+      released: '2026-09-04'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/io.embrace.sdk
+      repo_leg: github-org:embrace-io
+      publisher_leg: email:embrace.io
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
 source:
 - https://github.com/open-telemetry/opentelemetry.io/blob/main/data/ecosystem/vendors.yaml
 - https://github.com/open-telemetry/opentelemetry.io/blob/main/data/registry/
