@@ -56,45 +56,6 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
-- slug: embrace-datadog-own
-  label: Datadog (own)
-  partner: datadog
-  partner_name: Datadog (own)
-  category: Issue Tracking
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://github.com/DataDog/integrations-extras/tree/master/embrace_mobile
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: embrace-grafana-own
-  label: Grafana (own)
-  partner: grafana-com
-  partner_name: Grafana (own)
-  category: Application
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://grafana.com/grafana/plugins/embraceio-metric-app/
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: embrace-unity-own
-  label: Unity (own)
-  partner: unity
-  partner_name: Unity (own)
-  category: Unity Verified Solutions
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://assetstore.unity.com/packages/tools/integration/embrace-276810
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: embrace-maven-central
   label: Maven Central
   partner: maven-central
@@ -261,5 +222,95 @@
       categories, tier and projects are CONTEXT, never read (breadth is not credit)'
     detected_by: sweep-cloud-native.py
     detected: '2026-10-19'
+  status: not-a-workflow
+  arazzo: null
+- slug: embrace-cocoapods-trunk
+  label: CocoaPods trunk
+  partner_name: CocoaPods trunk
+  category: iOS SDK (CocoaPods)
+  type: register
+  channel: package-registry
+  evidence: https://cocoapods.org/pods/EmbraceIO
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: CocoaPods trunk (cdn.cocoapods.org Specs; github.com/CocoaPods/Specs)
+    spec_file: null
+    role: cocoapods-publisher
+    registered_name: Embrace.io
+    matched_domain: embrace.io
+    matched_by: domain
+    pods:
+    - pod: EmbraceIO
+      version: 7.0.0-rc3
+      homepage: https://embrace.io
+      deprecated: false
+    - pod: EmbraceIO-DEV
+      version: 6.2.0-alpha
+      homepage: https://embrace.io
+      deprecated: false
+    - pod: EmbraceIO-E
+      version: 5.7.7
+      homepage: http://embrace.io
+      deprecated: false
+    - pod: EmbraceIOEAP
+      version: 2.8.2
+      homepage: http://embrace.io
+      deprecated: false
+    signal_note: latest podspec homepage (domain) + authors (name); pods, versions and counts are context
+    detected_by: sweep-mobile-sdk-index.py
+    detected: '2026-10-21'
+  status: not-a-workflow
+  arazzo: null
+- slug: embrace-datadog-own
+  label: Datadog (own)
+  partner: datadog
+  partner_name: Datadog (own)
+  category: Issue Tracking
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://github.com/DataDog/integrations-extras/tree/master/embrace_mobile
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: embrace-grafana-own
+  label: Grafana (own)
+  partner: grafana-com
+  partner_name: Grafana (own)
+  category: Application
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://grafana.com/grafana/plugins/embraceio-metric-app/
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: embrace-unity-own
+  label: Unity (own)
+  partner: unity
+  partner_name: Unity (own)
+  category: Unity Verified Solutions
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://assetstore.unity.com/packages/tools/integration/embrace-276810
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: embrace-google-play-developer-google-play-sdk-index
+  label: Google Play Developer (Google Play SDK Index)
+  partner: google-play
+  partner_name: Google Play Developer (Google Play SDK Index)
+  category: mobile SDK (analytics)
+  type: marketplace
+  marketplace: Google Play SDK Index
+  channel: partner-built
+  evidence: https://play.google.com/sdks/details/io-embrace-embrace-android-sdk
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
