@@ -64,5 +64,133 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Embrace is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/embrace_stock/
+Embrace is a user-focused observability platform for mobile and web applications, built on OpenTelemetry. Its SDKs for iOS, Android, React Native, Flutter, Unity and the browser capture full-fidelity session, crash, exception, log, trace and network telemetry from real users, and the platform turns that into crash-free rates, user journeys, synthetics and custom dashboards. For programmatic access Embrace publishes a Prometheus-compatible Metrics API queried with PromQL, a Custom Metrics API for creating and managing derived metrics, OTLP forwarding to third-party destinations such as Datadog, Grafana Cloud, New Relic, Honeycomb, Elastic, Splunk, Chronosphere and Observe, outgoing alert webhooks, and a hosted Model Context Protocol server that exposes 21 read tools over crash, exception, log, span, session and network data to AI assistants using OAuth 2.0 or service-account bearer tokens.
+
+**Areas:** Company · Observability · Monitoring · Mobile · Real User Monitoring · OpenTelemetry · Metrics · Crash Reporting · Application Performance Monitoring · Developer Tools · MCP
+
+## Embrace on APIs.io
+
+Everything profiled for Embrace is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/embrace/](https://apis.io/providers/embrace/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [Embrace Metrics API](https://apis.io/apis/embrace/embrace-metrics-api/) — A Prometheus-compatible read API for querying Embrace metrics with PromQL. Standard Embrace metrics and any Custom Metrics an organization has created are…
+- [Embrace Custom Metrics API](https://apis.io/apis/embrace/embrace-custom-metrics-api/) — A REST management API for creating, retrieving and deleting the custom metrics of an Embrace organization. A custom metric is defined from a base Embrace…
+- [Embrace MCP Server](https://apis.io/apis/embrace/embrace-mcp-server/) — A hosted Model Context Protocol server over Streamable HTTP that exposes an Embrace organization's real-user observability data to MCP-capable AI…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Embrace Alerts Webhooks](https://apis.io/asyncapis/embrace/embrace-alerts-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [embrace](https://apis.io/servers/embrace/embrace/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Embrace Authentication](https://apis.io/security/embrace/embrace-authentication/)
+- [Embrace Domain Security](https://apis.io/security/embrace/embrace-domain-security/)
+- [Embrace Trust Center](https://apis.io/security/embrace/embrace-trust-center/)
+- [Embrace Vulnerability Disclosure](https://apis.io/security/embrace/embrace-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Embrace Scopes](https://apis.io/scopes/embrace/embrace-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Embrace Plans Pricing](https://apis.io/plans/embrace/embrace-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Embrace Rate Limits](https://apis.io/rate-limits/embrace/embrace-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://embrace.io/)
+- [Documentation](https://embrace.io/docs/)
+- [Getting started](https://embrace.io/docs/ios/6x/getting-started/)
+- [API reference](https://embrace.io/docs/metrics-forwarding/metrics-api/)
+- [Pricing](https://embrace.io/pricing/)
+- [Sign up](https://dash.embrace.io/signup)
+- [Support](https://embraceio-community.slack.com/join/shared_invite/zt-46iaieyz5-_684dnJ8U1yspqeQf~AGJA)
+- [Changelog](https://embrace.io/docs/product/changelog/)
+- [Blog](https://embrace.io/blog/)
+- [Trust centre](https://trust.embrace.io/)
+- [Terms of service](https://embrace.io/terms-of-service/)
+- [Privacy policy](https://embrace.io/privacy/)
+- [GitHub](https://github.com/embrace-io)
+- [Status](https://status.embrace.io/)
+
+## API Evangelist rating
+
+**Kin Score 66.4** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.3 |
+| Contract quality | 45.3 |
+| Contract governance | 18.2 |
+| Operational transparency | 84.2 |
+| Developer ergonomics | 73.2 |
+| Access clarity | 77.6 |
+
+**Agent readiness 52.2** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 45.1** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/embrace/](https://apis.io/providers/embrace/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Embrace: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/embrace/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
